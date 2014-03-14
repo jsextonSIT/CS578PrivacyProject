@@ -337,6 +337,7 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060013;
+        public static final int menu_tracking=0x7f06001d;
     }
     public static final class style {
         /** 

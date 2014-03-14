@@ -28,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".GPSActivity"></activity>
         <!-- for use on emulator -->
         <uses-library
         android:name="com.google.android.maps"
