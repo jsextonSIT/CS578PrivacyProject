@@ -68,7 +68,8 @@ public class MessageTrackerService extends Service {
 	public void onMessageLogChanged(){
 		String[] columns = {"date", "protocol"};
 		Cursor curs = cr.query(uri, columns, null, null, null);
-		
+		if (curs.moveToFirst()){
+		}
 	}
 
 	// To initialize IBinder
