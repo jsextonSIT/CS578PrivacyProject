@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 		boolean result = super.onCreateOptionsMenu(menu);
 		
 
-		menu.add(ContextMenu.NONE, MENU_TRACKING, ContextMenu.NONE, R.string.menu_tracking).setAlphabeticShortcut('T');
+		menu.add(ContextMenu.NONE, MENU_TRACKING, ContextMenu.NONE, R.string.menu_MAIN_tracking).setAlphabeticShortcut('M');
 		
 		return result;
 	}

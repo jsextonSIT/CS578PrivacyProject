@@ -5,5 +5,11 @@
     <string name="action_settings">Settings</string>
     <string name="SHARED_PREFS_FILENAME">message_tracker_service_shared_prefs</string>
 	
-    <string name="menu_tracking">Map</string>
+    <string name="menu_MAIN_tracking">Map</string>
+    <string name="menu_GPS_start">Start Tracking</string>
+    <string name="menu_GPS_stop">Stop Tracking</string>
+    <string name="GPS_service_stopped">GPS tracking has stopped</string>
+    <string name="GPS_service_started">GPS tracking has started</string>
+    <string name="GPS_name">GPSLoggerService</string>
+    <string name="menu_GPS_export">Export KML to SD Card</string>
 </resources>
