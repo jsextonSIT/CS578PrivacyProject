@@ -4,16 +4,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.example.behaviortracker.GPSTrackerService;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ListActivity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -23,43 +30,57 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
+//import com.google.android.gms.common.GooglePlayServicesClient;
+//import com.google.android.gms.common.GooglePlayServicesUtil;
+//import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+//import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.maps.MapController;
 
-public class GPSActivity extends FragmentActivity implements
+public class GPSActivity extends ListActivity /*implements
 		GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener {
+		GooglePlayServicesClient.OnConnectionFailedListener*/ {
 	private String currentTripName = "";
 	private int tripNum = 0;
 	private final DecimalFormat sevenSigDigits = new DecimalFormat("0.#######");
 	private static final String tag = "GPSTrackerActivity";
 	
+	private ArrayList<GPSPoint> GPSpoints;
+	private Bundle instanceState;
 	private boolean serviceOn = false;
-	MenuItem toggle;
+	private GPSTrackerService GPSservice;
+	
+	MenuItem toggle, list;
 	private static final int MENU_TOGGLE = 1;
+	private static final int MENU_LIST = 2;
 	private static final int MENU_EXPORT = 2;
 	Location location;
 	int altitudeCorrectionMeters = 20;
 	
 	double latitude, longitude;
-	private LocationClient mLocationClient;
-	private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+	//private LocationClient mLocationClient;
+	//private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 	ConnectionResult mConnectionResult;
 	MapController mapController;
 	GoogleMap map;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fragment_map);
+		//check if service is still on
+		instanceState = savedInstanceState;
+		if (savedInstanceState == null){
+			serviceOn = false;
+		} else {
+			serviceOn = savedInstanceState.getBoolean("state");
+		}
+		setContentView(R.layout.fragment_list);
+		//map stuff
+		//setContentView(R.layout.fragment_map);
 		//get map layout
-		map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+		//map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 		//mapController = map.getController();
 		//mapController.setZoom(16);
-		mLocationClient = new LocationClient(this, this, this);
+		//mLocationClient = new LocationClient(this, this, this);
 		
 	}
 	@Override
@@ -67,9 +88,13 @@ public class GPSActivity extends FragmentActivity implements
 		// Inflate the menu; this adds items to the action bar if it is present.
 		boolean result = super.onCreateOptionsMenu(menu);
 		//add start tracking button to menu
-		toggle = menu.add(ContextMenu.NONE, MENU_TOGGLE, ContextMenu.NONE, R.string.menu_GPS_start).setAlphabeticShortcut('S');
-		menu.add(ContextMenu.NONE, MENU_EXPORT, ContextMenu.NONE, R.string.menu_GPS_export).setAlphabeticShortcut('S');
-		
+		if (serviceOn){
+			toggle = menu.add(ContextMenu.NONE, MENU_TOGGLE, ContextMenu.NONE, R.string.menu_GPS_stop).setAlphabeticShortcut('S');
+		} else {
+			toggle = menu.add(ContextMenu.NONE, MENU_TOGGLE, ContextMenu.NONE, R.string.menu_GPS_start).setAlphabeticShortcut('S');
+		}
+		menu.add(ContextMenu.NONE, MENU_EXPORT, ContextMenu.NONE, R.string.menu_GPS_export).setAlphabeticShortcut('E');
+		list = menu.add(ContextMenu.NONE, MENU_LIST, ContextMenu.NONE, R.string.menu_GPS_list).setAlphabeticShortcut('L');
 		return result;
 	}
 	
@@ -82,9 +107,12 @@ public class GPSActivity extends FragmentActivity implements
 				//start/stop tracking service
 				toggleService();
 				break;
-			case MENU_EXPORT:
-				doExport();
+			case MENU_LIST:
+				showList();
 				break;
+			/*case MENU_EXPORT:
+				doExport();
+				break;*/
 			default:
 				//showAlert(R.string.menu_message_unsupported);
 				break;
@@ -232,21 +260,53 @@ public class GPSActivity extends FragmentActivity implements
 		return buf.toString();
 	}
 	
-	public void toggleService(){
+	public void showList(){
+		if (GPSservice != null && serviceOn){
+			GPSpoints = GPSservice.getPoints();
+			GPSListAdapter adapter = new GPSListAdapter(this, GPSpoints);
+			setListAdapter(adapter);
+		}
+	}
+	
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+	    public void onServiceConnected(ComponentName className, 
+	        IBinder binder) {
+	      GPSTrackerService.LocalBinder b = (GPSTrackerService.LocalBinder) binder;
+	      GPSservice = b.getService();
+	      Toast.makeText(GPSActivity.this, "Connected", Toast.LENGTH_SHORT)
+	          .show();
+	    }
+
+	    public void onServiceDisconnected(ComponentName className) {
+	      GPSservice = null;
+	    }
+	  };
+	
+	private void toggleService(){
 		if(serviceOn){
 			//stop the service
+			Log.i(tag, "Turning off service");
+			unbindService(mConnection);
 			stopService(new Intent(GPSActivity.this,
                     GPSTrackerService.class));
 			//change menubutton text
 			toggle.setTitle(R.string.menu_GPS_start);
 			serviceOn = false;
+			Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show();
 		} else {
 			//stop the service
-			startService(new Intent(GPSActivity.this,
-                    GPSTrackerService.class));
+			Log.i(tag, "Turning on service");
+			Intent intent = new Intent(GPSActivity.this,
+                    GPSTrackerService.class);
+			startService(intent);
+			bindService(intent, mConnection,
+			        GPSActivity.this.BIND_AUTO_CREATE);
 			//change menubutton text
 			toggle.setTitle(R.string.menu_GPS_stop);
 			serviceOn = true;
+			Toast.makeText(this, "Service started", Toast.LENGTH_LONG).show();
+			
 		}
 	}
 
@@ -254,72 +314,105 @@ public class GPSActivity extends FragmentActivity implements
 	protected void onStart() {
 		super.onStart();
 		// once we have the reference to the client, connect it
-		if (mLocationClient != null)
-			mLocationClient.connect();
+		/*mapif (mLocationClient != null)
+			mLocationClient.connect();*/
 		
 	}
-
+	@Override
+	protected void onResume(){
+		super.onResume();
+		//onRestoreInstanceState(instanceState);
+		if (serviceOn){
+		Intent intent = new Intent(GPSActivity.this,
+                GPSTrackerService.class);
+	    bindService(intent, mConnection,
+	        GPSActivity.this.BIND_AUTO_CREATE);
+		}
+	}
+	@Override
+	protected void onPause(){
+		super.onPause();
+		//onSaveInstanceState(instanceState);
+		if(serviceOn){
+			unbindService(mConnection);
+		}
+		
+	}
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+	  super.onSaveInstanceState(savedInstanceState);
+	  // Save UI state changes to the savedInstanceState.
+	  // This bundle will be passed to onCreate if the process is
+	  // killed and restarted.
+	  //outState.putParcelableArrayList("key", G);
+	  savedInstanceState.putBoolean("state", serviceOn);
+	}
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState){
+		super.onRestoreInstanceState(savedInstanceState);
+		serviceOn = savedInstanceState.getBoolean("state");
+	}
 	@Override
 	protected void onStop() {
 		// Disconnecting the client invalidates it.
-		mLocationClient.disconnect();
+		/*map mLocationClient.disconnect();*/
 		super.onStop();
 	}
 
-	@Override
+/*	@Override
 	public void onConnectionFailed(ConnectionResult result) {
-		/*
+		
 		 * Google Play services can resolve some errors it detects. If the error
 		 * has a resolution, try sending an Intent to start a Google Play
 		 * services activity that can resolve error.
-		 */
+		 
 		mConnectionResult = result;
 		if (mConnectionResult.hasResolution()) {
 			try {
 				// Start an Activity that tries to resolve the error
 				mConnectionResult.startResolutionForResult(this,
 						CONNECTION_FAILURE_RESOLUTION_REQUEST);
-				/*
+				
 				 * Thrown if Google Play services canceled the original
 				 * PendingIntent
-				 */
+				 
 			} catch (IntentSender.SendIntentException e) {
 				// Log the error
 				e.printStackTrace();
 			}
 		} else {
-			/*
+			
 			 * If no resolution is available, display a dialog to the user with
 			 * the error.
-			 */
+			 
 			// mConnectionResult.showErrorDialog("No Resolution Available");
 		}
 
-	}
+	}*/
 
 	/*
 	 * Called by Location Services when the request to connect the client
 	 * finishes successfully. At this point, you can request the current
 	 * location or start periodic updates
 	 */
-	@Override
+	/*@Override
 	public void onConnected(Bundle arg0) {
 		// Display the connection status
 		Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
 
-	}
+	}*/
 
 	/*
 	 * Called by Location Services if the connection to the location client
 	 * drops because of an error.
 	 */
-	@Override
+	/*@Override
 	public void onDisconnected() {
 		// Display the connection status
 		Toast.makeText(this, "Disconnected. Please re-connect.",
 				Toast.LENGTH_SHORT).show();
 
-	}
+	}*/
 
 	/*
 	 * Check if Google Play services are available
@@ -351,20 +444,21 @@ public class GPSActivity extends FragmentActivity implements
 	/*
 	 * Handle results returned to the FragmentActivity by Google Play services
 	 */
-	@Override
+/*	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Decide what to do based on the original request code
 		switch (requestCode) {
 
 		case CONNECTION_FAILURE_RESOLUTION_REQUEST:
-			/*
+			
 			 * If the result code is Activity.RESULT_OK, try to connect again
-			 */
+			 *
 		switch (resultCode) {
 		case Activity.RESULT_OK:
 				/*
 				 * Try the request again
-				 */
+				 
+			
 		mLocationClient.connect();
 		break;
 			}
@@ -400,5 +494,7 @@ public class GPSActivity extends FragmentActivity implements
 			}
 			return false;
 		}
-	}
+	}*/
+	
 }
+

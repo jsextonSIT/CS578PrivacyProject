@@ -10,6 +10,11 @@
     <string name="menu_GPS_stop">Stop Tracking</string>
     <string name="GPS_service_stopped">GPS tracking has stopped</string>
     <string name="GPS_service_started">GPS tracking has started</string>
-    <string name="GPS_name">GPSLoggerService</string>
+    <string name="GPS_name">GPSTrackerService</string>
     <string name="menu_GPS_export">Export KML to SD Card</string>
+    <string name="menu_GPS_list">Show GPS points list</string>
+    <string name="menu_GPS_hide_list">Hide GPS points list</string>
+    <string name="layout_list_longitude">Longitude</string>
+    <string name="layout_list_latitude">Latitude</string>
+    <string name="layout_list_date">Date</string>
 </resources>

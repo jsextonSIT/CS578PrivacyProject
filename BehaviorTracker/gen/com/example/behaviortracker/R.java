@@ -214,15 +214,20 @@ containing a value of this type.
         public static final int common_signin_btn_text_normal_light=0x7f020015;
         public static final int common_signin_btn_text_pressed_dark=0x7f020016;
         public static final int common_signin_btn_text_pressed_light=0x7f020017;
-        public static final int ic_launcher=0x7f020018;
-        public static final int ic_plusone_medium_off_client=0x7f020019;
-        public static final int ic_plusone_small_off_client=0x7f02001a;
-        public static final int ic_plusone_standard_off_client=0x7f02001b;
-        public static final int ic_plusone_tall_off_client=0x7f02001c;
+        public static final int gpslogger16=0x7f020018;
+        public static final int gpslogger48=0x7f020019;
+        public static final int ic_launcher=0x7f02001a;
+        public static final int ic_plusone_medium_off_client=0x7f02001b;
+        public static final int ic_plusone_small_off_client=0x7f02001c;
+        public static final int ic_plusone_standard_off_client=0x7f02001d;
+        public static final int ic_plusone_tall_off_client=0x7f02001e;
     }
     public static final class id {
-        public static final int action_settings=0x7f050006;
+        public static final int action_settings=0x7f050009;
+        public static final int date=0x7f050006;
         public static final int hybrid=0x7f050004;
+        public static final int latitude=0x7f050007;
+        public static final int longitude=0x7f050008;
         public static final int map=0x7f050005;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
@@ -234,12 +239,17 @@ containing a value of this type.
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int fragment_map=0x7f030001;
+        public static final int fragment_list=0x7f030001;
+        public static final int fragment_map=0x7f030002;
+        public static final int gps_item=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
     }
     public static final class string {
+        public static final int GPS_name=0x7f060022;
+        public static final int GPS_service_started=0x7f060021;
+        public static final int GPS_service_stopped=0x7f060020;
         public static final int SHARED_PREFS_FILENAME=0x7f06001c;
         public static final int action_settings=0x7f06001b;
         public static final int app_name=0x7f06001a;
@@ -337,7 +347,15 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060013;
-        public static final int menu_tracking=0x7f06001d;
+        public static final int layout_list_date=0x7f060028;
+        public static final int layout_list_latitude=0x7f060027;
+        public static final int layout_list_longitude=0x7f060026;
+        public static final int menu_GPS_export=0x7f060023;
+        public static final int menu_GPS_hide_list=0x7f060025;
+        public static final int menu_GPS_list=0x7f060024;
+        public static final int menu_GPS_start=0x7f06001e;
+        public static final int menu_GPS_stop=0x7f06001f;
+        public static final int menu_MAIN_tracking=0x7f06001d;
     }
     public static final class style {
         /** 
