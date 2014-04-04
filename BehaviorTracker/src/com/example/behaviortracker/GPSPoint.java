@@ -2,6 +2,7 @@ package com.example.behaviortracker;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class GPSPoint implements Parcelable{
 	double latitude;
@@ -38,4 +39,9 @@ public class GPSPoint implements Parcelable{
 	            return new GPSPoint[size];
 	        }
 	    };
+	    public void logPoint(){
+	    	Log.i("New GPS Point at:", date);
+	    	Log.i("latitude", Double.toString(latitude));
+	    	Log.i("longitude", Double.toString(longitude));
+	    }
 }

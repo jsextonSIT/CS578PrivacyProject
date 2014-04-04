@@ -41,9 +41,9 @@ public class GPSTrackerService extends Service {
 			"yyyy/MM/dd/ HH:mm:ss");
 	
 	// variables for time/distance between logging location
-	private static long minTimeMillis = 2000;
-	private static long minDistanceMeters = 10;
-	private static float minAccuracyMeters = 35;
+	private static long minTimeMillis = 5000;
+	private static long minDistanceMeters = 0;//was 10
+	private static float minAccuracyMeters = 50;//was 35
 	// possibly add options in future to change these
 
 	private int lastStatus = 0;
@@ -80,6 +80,7 @@ public class GPSTrackerService extends Service {
 	public class MyLocationListener implements LocationListener {
 
 		public void onLocationChanged(Location loc) {
+			Log.i("location changed", "called");
 			if (loc != null) {
 				boolean pointIsRecorded = false;
 				try {
@@ -92,15 +93,16 @@ public class GPSTrackerService extends Service {
 						greg.add(Calendar.SECOND, (offset / 1000) * -1);
 						StringBuffer queryBuf = new StringBuffer();
 						
-						String date = timestampFormat2.format(greg.getTime());
+						//String date = timestampFormat2.format(greg.getTime());
 						
-						GPSPoint newPoint = new GPSPoint(loc.getLatitude(), loc.getLongitude(), date);
-						GPSpoints.add(newPoint);
+						//GPSPoint newPoint = new GPSPoint(loc.getLatitude(), loc.getLongitude(), date);
+						//newPoint.logPoint();
+						//GPSpoints.add(newPoint);
 						queryBuf.append("INSERT INTO "
 								+ POINTS_TABLE_NAME
 								+ " (GMTTIMESTAMP,LATITUDE,LONGITUDE,ALTITUDE,ACCURACY,SPEED,BEARING) VALUES ("
 								+ "'"
-								+ timestampFormat.format(greg.getTime())
+								+ timestampFormat2.format(greg.getTime())
 								+ "',"
 								+ loc.getLatitude()
 								+ ","
@@ -116,7 +118,7 @@ public class GPSTrackerService extends Service {
 								+ ","
 								+ (loc.hasBearing() ? loc.getBearing() : "NULL")
 								+ ");");
-						Log.i(tag, queryBuf.toString());
+						//Log.i(tag, queryBuf.toString());
 						db = openOrCreateDatabase(DATABASE_NAME,
 								SQLiteDatabase.OPEN_READWRITE, null);
 						db.execSQL(queryBuf.toString());
@@ -244,17 +246,21 @@ public class GPSTrackerService extends Service {
 		CharSequence text = getText(R.string.GPS_service_started);
 
 		// Set the icon, scrolling text and timestamp
-		Notification notification = new Notification(R.drawable.gpslogger16,
-				text, System.currentTimeMillis());
-
+		
+		
 		// The PendingIntent to launch our activity if the user selects this
 		// notification
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				new Intent(this, GPSTrackerService.class), 0);
-
+		int requestID = (int) System.currentTimeMillis();
+		PendingIntent contentIntent = PendingIntent.getActivity(this, requestID,
+				new Intent(this, GPSTrackerService.class), PendingIntent.FLAG_CANCEL_CURRENT);
+		Notification notification = new Notification.Builder(this)
+		.setSmallIcon(R.drawable.gpslogger16)
+		.setContentTitle(text)
+		.setContentIntent(contentIntent)
+		.build();
 		// Set the info for the views that show in the notification panel.
-		notification.setLatestEventInfo(this, getText(R.string.GPS_name), text,
-				contentIntent);
+		/*notification.setLatestEventInfo(this, getText(R.string.GPS_name), text,
+				contentIntent);*/
 
 		// Send the notification.
 		// We use a layout id because it is a unique number. We use it later to

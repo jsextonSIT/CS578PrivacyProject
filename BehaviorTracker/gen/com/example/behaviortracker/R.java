@@ -247,9 +247,9 @@ containing a value of this type.
         public static final int main=0x7f0a0000;
     }
     public static final class string {
-        public static final int GPS_name=0x7f060022;
-        public static final int GPS_service_started=0x7f060021;
-        public static final int GPS_service_stopped=0x7f060020;
+        public static final int GPS_name=0x7f060023;
+        public static final int GPS_service_started=0x7f060022;
+        public static final int GPS_service_stopped=0x7f060021;
         public static final int SHARED_PREFS_FILENAME=0x7f06001c;
         public static final int action_settings=0x7f06001b;
         public static final int app_name=0x7f06001a;
@@ -347,12 +347,13 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060013;
-        public static final int layout_list_date=0x7f060028;
-        public static final int layout_list_latitude=0x7f060027;
-        public static final int layout_list_longitude=0x7f060026;
-        public static final int menu_GPS_export=0x7f060023;
-        public static final int menu_GPS_hide_list=0x7f060025;
-        public static final int menu_GPS_list=0x7f060024;
+        public static final int layout_list_date=0x7f060029;
+        public static final int layout_list_latitude=0x7f060028;
+        public static final int layout_list_longitude=0x7f060027;
+        public static final int menu_GPS_clear=0x7f060020;
+        public static final int menu_GPS_export=0x7f060024;
+        public static final int menu_GPS_hide_list=0x7f060026;
+        public static final int menu_GPS_list=0x7f060025;
         public static final int menu_GPS_start=0x7f06001e;
         public static final int menu_GPS_stop=0x7f06001f;
         public static final int menu_MAIN_tracking=0x7f06001d;

@@ -3,6 +3,7 @@ package com.example.behaviortracker;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,14 +26,19 @@ public class GPSListAdapter extends ArrayAdapter<GPSPoint>{
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.gps_item, parent, false);
 		}
-		
-		
+		Log.i("Date", points.get(position).date);
+		Log.i("position", Integer.toString(position));
+		GPSPoint i = points.get(position);
 		TextView date = (TextView) convertView.findViewById(R.id.date);
 		TextView latitude = (TextView) convertView.findViewById(R.id.latitude);
 		TextView longitude = (TextView) convertView.findViewById(R.id.longitude);
-		date.setText(points.get(position).date);
-		latitude.setText(Double.toString(points.get(position).latitude));
-		longitude.setText(Double.toString(points.get(position).longitude));
+//		date.setText("d");
+//		latitude.setText("lat");
+//		longitude.setText("long");
+		date.setText(i.date);
+		
+		latitude.setText(Double.toString(i.latitude));
+		longitude.setText(Double.toString(i.longitude));
 		return convertView;
 	}
 }

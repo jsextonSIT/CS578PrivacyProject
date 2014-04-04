@@ -8,6 +8,7 @@
     <string name="menu_MAIN_tracking">Map</string>
     <string name="menu_GPS_start">Start Tracking</string>
     <string name="menu_GPS_stop">Stop Tracking</string>
+    <string name="menu_GPS_clear">Clear Database</string>
     <string name="GPS_service_stopped">GPS tracking has stopped</string>
     <string name="GPS_service_started">GPS tracking has started</string>
     <string name="GPS_name">GPSTrackerService</string>
