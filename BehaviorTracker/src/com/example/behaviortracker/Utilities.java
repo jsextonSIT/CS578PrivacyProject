@@ -14,7 +14,7 @@ public class Utilities {
 		}
 		return ret;
 	}
-	
+
 	public static long getPreviousMidnightInMillis(long time){
 		long ret = 0;
 		if(time > 0){
@@ -23,14 +23,14 @@ public class Utilities {
 		}
 		return ret;
 	}
-	
+
 	public static long getPreviousQuantumInMillis(long time, long quantum){
 		long ret = 0;
 		if(time > 0){
 			long x = time % quantum;
-			ret = time - quantum;
+			ret = time - x;
 		}
 		return ret;
 	}
-	
+
 }
