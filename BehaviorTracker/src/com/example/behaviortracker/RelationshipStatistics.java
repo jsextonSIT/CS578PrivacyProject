@@ -13,8 +13,8 @@ import android.util.Log;
 public class RelationshipStatistics {
 	//this class aims to compute two things -  a list of contact names/numbers, and a list of scores associated with
 	//them, based on how close they are to the user.
-	ArrayList<String> contacts;
-	ArrayList<Integer> scores;
+	public ArrayList<String> contacts;
+	public ArrayList<Integer> scores;
 	private Uri contactsUri;
 	private Uri smsUri;
 	private String smsloc = "content://sms/";
