@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,53 +6,134 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity" 
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:visibility="gone" />
-	<ScrollView
-	    android:id="@+id/layout_assumptions"
-	    android:visibility="gone"
- 	  	android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <LinearLayout
+
+    <LinearLayout
+        android:id="@+id/layout_relationships"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="horizontal"
+        android:gravity="top"
+        android:visibility="gone">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingBottom="5dp"
-            android:text="@string/assum_desc_title" />
+            android:id="@+id/rel_score"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="@string/layout_rel_scores"
+            android:textSize="20sp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:text="@string/assum_desc_points" />
+            android:id="@+id/rel_contacts"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="@string/layout_rel_contacts"
+            android:textSize="20sp" />
+        </LinearLayout>
+        <LinearLayout
+        android:id="@+id/layout_inactive"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="top"
+        android:visibility="gone">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:text="@string/assum_desc_home" />
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="@string/layout_inact_start"
+            android:textSize="20sp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:text="@string/assum_desc_work" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:text="@string/assum_desc_holiday" />
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="@string/layout_inact_end"
+            android:textSize="20sp" />
     </LinearLayout>
-    </ScrollView>
+    <LinearLayout
+        android:id="@+id/layout_inactive2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="top"
+        android:visibility="gone">
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:id="@+id/inact_start"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="@+id/inact_end"
+            android:textSize="20sp" />
+    </LinearLayout>
+	<ListView
+        android:id="@+id/main_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+    <ScrollView
+        android:id="@+id/layout_assumptions"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:text="@string/assum_desc_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="@string/assum_desc_points" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="@string/assum_desc_home" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="@string/assum_desc_work" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="@string/assum_desc_holiday" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

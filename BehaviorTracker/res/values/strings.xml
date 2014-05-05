@@ -7,6 +7,8 @@
 	
     <string name="menu_MAIN_tracking">GPS Tracker</string>
     <string name="menu_MAIN_assumptions">Show GPS Assumptions</string>
+    <string name="menu_MAIN_relationships">Show Relationships</string>
+    <string name="menu_MAIN_inactive">Show Inactive Time</string>
     <string name="menu_GPS_start">Start Tracking</string>
     <string name="menu_GPS_stop">Stop Tracking</string>
     <string name="menu_GPS_clear">Clear Database</string>
@@ -19,6 +21,10 @@
     <string name="menu_GPS_hide_list">Hide GPS points</string>
     <string name="menu_GPS_night_list">Show night points</string>
     <string name="menu_GPS_infer_list">Show inferences</string>
+    <string name="layout_inact_start">Inactivity Start</string>
+    <string name="layout_inact_end">End</string>
+    <string name="layout_rel_contacts">Contact</string>
+    <string name="layout_rel_scores">Relationship Score</string>
     <string name="layout_list_longitude">Longitude</string>
     <string name="layout_list_latitude">Latitude</string>
     <string name="layout_list_date">Date and Time</string>
