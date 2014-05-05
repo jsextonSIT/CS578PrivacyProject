@@ -267,7 +267,7 @@ public class GPSTrackerService extends Service {
 		// notification
 		int requestID = (int) System.currentTimeMillis();
 		PendingIntent contentIntent = PendingIntent.getActivity(this, requestID,
-				new Intent(this, GPSTrackerService.class), PendingIntent.FLAG_CANCEL_CURRENT);
+				new Intent(this, GPSActivity.class), PendingIntent.FLAG_CANCEL_CURRENT);
 		Notification notification = new Notification.Builder(this)
 		.setSmallIcon(R.drawable.gpslogger16)
 		.setContentTitle(text)

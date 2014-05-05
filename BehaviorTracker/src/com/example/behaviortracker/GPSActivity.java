@@ -50,7 +50,7 @@ public class GPSActivity extends ListActivity /*
 
 	private ArrayList<GPSPoint> GPSpoints = null;
 	private int arraysize;
-	private Bundle instanceState;
+	private Bundle instanceState = null;
 	private boolean serviceOn = false;
 	private GPSTrackerService GPSservice = null;
 	private GPSListAdapter adapter = null;
@@ -293,24 +293,24 @@ public class GPSActivity extends ListActivity /*
 			/* add home points */
 			for (int i = 0; i < 240; i += 10) {
 				StringBuffer queryBuf = makePoint(init, "2014-04-15 " + i / 60
-						+ ":" + (((i % 60) == 0) ? "00" : i % 60 + ":00"),
+						+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
 						"40.7459", "-74.0272");
 				db.execSQL(queryBuf.toString());
 				init++;
 				queryBuf = makePoint(init, "2014-04-16 " + i / 60 + ":"
-						+ (((i % 60) == 0) ? "00" : i % 60 + ":00"), "40.7459",
+						+ (((i % 60) == 0) ? "00" : i % 60) + ":00", "40.7459",
 						"-74.0272");
 				db.execSQL(queryBuf.toString());
 				init++;
 			}
 			for (int i = 1320; i < 1440; i += 10) {
 				StringBuffer queryBuf = makePoint(init, "2014-04-15 " + i / 60
-						+ ":" + (((i % 60) == 0) ? "00" : i % 60 + ":00"),
+						+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
 						"40.7459", "-74.0272");
 				init++;
 				db.execSQL(queryBuf.toString());
 				queryBuf = makePoint(init, "2014-04-16 " + i / 60 + ":"
-						+ (((i % 60) == 0) ? "00" : i % 60 + ":00"), "40.7459",
+						+ (((i % 60) == 0) ? "00" : i % 60) + ":00", "40.7459",
 						"-74.0272");
 				db.execSQL(queryBuf.toString());
 				init++;
@@ -318,12 +318,12 @@ public class GPSActivity extends ListActivity /*
 			/* add work points */
 			for (int i = 600; i < 960; i += 10) {
 				StringBuffer queryBuf = makePoint(init, "2014-04-15 " + i / 60
-						+ ":" + (((i % 60) == 0) ? "00" : i % 60 + ":00"),
+						+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
 						"40.7450", "-74.0242");
 				db.execSQL(queryBuf.toString());
 				init++;
 				queryBuf = makePoint(init, "2014-04-16 " + i / 60 + ":"
-						+ (((i % 60) == 0) ? "00" : i % 60 + ":00"), "40.7450",
+						+ (((i % 60) == 0) ? "00" : i % 60) + ":00", "40.7450",
 						"-74.0242");
 				db.execSQL(queryBuf.toString());
 				init++;
@@ -331,7 +331,7 @@ public class GPSActivity extends ListActivity /*
 			/* add easter points */
 			for (int i = 600; i < 960; i += 10) {
 				StringBuffer queryBuf = makePoint(init, "2014-04-20 " + i / 60
-						+ ":" + (((i % 60) == 0) ? "00" : i % 60 + ":00"),
+						+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
 						"40.7458", "-74.0273");
 				db.execSQL(queryBuf.toString());
 				init++;
@@ -367,7 +367,7 @@ public class GPSActivity extends ListActivity /*
 				GPSTrackerService.DATABASE_NAME, SQLiteDatabase.OPEN_READWRITE,
 				null);
 		Cursor cursor = db.rawQuery("SELECT * " + " FROM "
-				+ GPSTrackerService.POINTS_TABLE_NAME + " ORDER BY ID ASC",
+				+ GPSTrackerService.POINTS_TABLE_NAME + " ORDER BY GMTDATESTAMP DESC",
 				null);
 		// int gmtTimestampColumnIndex =
 		// cursor.getColumnIndexOrThrow("GMTTIMESTAMP");
@@ -643,7 +643,9 @@ public class GPSActivity extends ListActivity /*
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// onRestoreInstanceState(instanceState);
+		if (instanceState != null){
+		 onRestoreInstanceState(instanceState);
+		}
 		if (serviceOn) {
 			Intent intent = new Intent(GPSActivity.this,
 					GPSTrackerService.class);
@@ -654,7 +656,7 @@ public class GPSActivity extends ListActivity /*
 	@Override
 	protected void onPause() {
 		super.onPause();
-		// onSaveInstanceState(instanceState);
+		 
 		if (serviceOn) {
 			unbindService(mConnection);
 		}
@@ -679,6 +681,10 @@ public class GPSActivity extends ListActivity /*
 
 	@Override
 	protected void onStop() {
+		if (instanceState == null){
+			instanceState = new Bundle();
+		}
+		onSaveInstanceState(instanceState);
 		// Disconnecting the client invalidates it.
 		/* map mLocationClient.disconnect(); */
 		super.onStop();
@@ -761,69 +767,69 @@ public class GPSActivity extends ListActivity /*
 		}
 	}
 
-	private HashMap initValuesMap() {
-		HashMap valuesMap = new HashMap();
+//	private HashMap initValuesMap() {
+//		HashMap valuesMap = new HashMap();
+//
+//		valuesMap.put("FILENAME", currentTripName);
+//
+//		// RadioButton airButton = (RadioButton)findViewById(R.id.RadioAir);
+//		/*
+//		 * if (false) { // use air settings valuesMap.put("EXTRUDE", "1");
+//		 * valuesMap.put("TESSELLATE", "0"); valuesMap.put("ALTITUDEMODE",
+//		 * "absolute"); } else {
+//		 */
+//		// use ground settings for the export
+//		valuesMap.put("EXTRUDE", "0");
+//		valuesMap.put("TESSELLATE", "1");
+//		valuesMap.put("ALTITUDEMODE", "clampToGround");
+//		// }
+//
+//		return valuesMap;
+//	}
 
-		valuesMap.put("FILENAME", currentTripName);
-
-		// RadioButton airButton = (RadioButton)findViewById(R.id.RadioAir);
-		/*
-		 * if (false) { // use air settings valuesMap.put("EXTRUDE", "1");
-		 * valuesMap.put("TESSELLATE", "0"); valuesMap.put("ALTITUDEMODE",
-		 * "absolute"); } else {
-		 */
-		// use ground settings for the export
-		valuesMap.put("EXTRUDE", "0");
-		valuesMap.put("TESSELLATE", "1");
-		valuesMap.put("ALTITUDEMODE", "clampToGround");
-		// }
-
-		return valuesMap;
-	}
-
-	private void initFileBuf(StringBuffer fileBuf, HashMap valuesMap) {
-		fileBuf.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		fileBuf.append("<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n");
-		fileBuf.append("  <Document>\n");
-		fileBuf.append("    <name>" + valuesMap.get("FILENAME") + "</name>\n");
-		fileBuf.append("    <description>GPSLogger KML export</description>\n");
-		fileBuf.append("    <Style id=\"yellowLineGreenPoly\">\n");
-		fileBuf.append("      <LineStyle>\n");
-		fileBuf.append("        <color>7f00ffff</color>\n");
-		fileBuf.append("        <width>4</width>\n");
-		fileBuf.append("      </LineStyle>\n");
-		fileBuf.append("      <PolyStyle>\n");
-		fileBuf.append("        <color>7f00ff00</color>\n");
-		fileBuf.append("      </PolyStyle>\n");
-		fileBuf.append("    </Style>\n");
-		fileBuf.append("    <Placemark>\n");
-		fileBuf.append("      <name>Absolute Extruded</name>\n");
-		fileBuf.append("      <description>Transparent green wall with yellow points</description>\n");
-		fileBuf.append("      <styleUrl>#yellowLineGreenPoly</styleUrl>\n");
-		fileBuf.append("      <LineString>\n");
-		fileBuf.append("        <extrude>" + valuesMap.get("EXTRUDE")
-				+ "</extrude>\n");
-		fileBuf.append("        <tessellate>" + valuesMap.get("TESSELLATE")
-				+ "</tessellate>\n");
-		fileBuf.append("        <altitudeMode>" + valuesMap.get("ALTITUDEMODE")
-				+ "</altitudeMode>\n");
-		fileBuf.append("        <coordinates>\n");
-	}
-
-	private void closeFileBuf(StringBuffer fileBuf, String beginTimestamp,
-			String endTimestamp) {
-		fileBuf.append("        </coordinates>\n");
-		fileBuf.append("     </LineString>\n");
-		fileBuf.append("	 <TimeSpan>\n");
-		String formattedBeginTimestamp = zuluFormat(beginTimestamp);
-		fileBuf.append("		<begin>" + formattedBeginTimestamp + "</begin>\n");
-		String formattedEndTimestamp = zuluFormat(endTimestamp);
-		fileBuf.append("		<end>" + formattedEndTimestamp + "</end>\n");
-		fileBuf.append("	 </TimeSpan>\n");
-		fileBuf.append("    </Placemark>\n");
-		fileBuf.append("  </Document>\n");
-		fileBuf.append("</kml>");
-	}
+//	private void initFileBuf(StringBuffer fileBuf, HashMap valuesMap) {
+//		fileBuf.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+//		fileBuf.append("<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n");
+//		fileBuf.append("  <Document>\n");
+//		fileBuf.append("    <name>" + valuesMap.get("FILENAME") + "</name>\n");
+//		fileBuf.append("    <description>GPSLogger KML export</description>\n");
+//		fileBuf.append("    <Style id=\"yellowLineGreenPoly\">\n");
+//		fileBuf.append("      <LineStyle>\n");
+//		fileBuf.append("        <color>7f00ffff</color>\n");
+//		fileBuf.append("        <width>4</width>\n");
+//		fileBuf.append("      </LineStyle>\n");
+//		fileBuf.append("      <PolyStyle>\n");
+//		fileBuf.append("        <color>7f00ff00</color>\n");
+//		fileBuf.append("      </PolyStyle>\n");
+//		fileBuf.append("    </Style>\n");
+//		fileBuf.append("    <Placemark>\n");
+//		fileBuf.append("      <name>Absolute Extruded</name>\n");
+//		fileBuf.append("      <description>Transparent green wall with yellow points</description>\n");
+//		fileBuf.append("      <styleUrl>#yellowLineGreenPoly</styleUrl>\n");
+//		fileBuf.append("      <LineString>\n");
+//		fileBuf.append("        <extrude>" + valuesMap.get("EXTRUDE")
+//				+ "</extrude>\n");
+//		fileBuf.append("        <tessellate>" + valuesMap.get("TESSELLATE")
+//				+ "</tessellate>\n");
+//		fileBuf.append("        <altitudeMode>" + valuesMap.get("ALTITUDEMODE")
+//				+ "</altitudeMode>\n");
+//		fileBuf.append("        <coordinates>\n");
+//	}
+//
+//	private void closeFileBuf(StringBuffer fileBuf, String beginTimestamp,
+//			String endTimestamp) {
+//		fileBuf.append("        </coordinates>\n");
+//		fileBuf.append("     </LineString>\n");
+//		fileBuf.append("	 <TimeSpan>\n");
+//		String formattedBeginTimestamp = zuluFormat(beginTimestamp);
+//		fileBuf.append("		<begin>" + formattedBeginTimestamp + "</begin>\n");
+//		String formattedEndTimestamp = zuluFormat(endTimestamp);
+//		fileBuf.append("		<end>" + formattedEndTimestamp + "</end>\n");
+//		fileBuf.append("	 </TimeSpan>\n");
+//		fileBuf.append("    </Placemark>\n");
+//		fileBuf.append("  </Document>\n");
+//		fileBuf.append("</kml>");
+//	}
 
 	private String zuluFormat(String beginTimestamp) {
 		// turn 20081215135500 into 2008-12-15T13:55:00Z
