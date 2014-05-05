@@ -2,36 +2,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
+    android:orientation="vertical" 
+    android:id="@+id/GPS_layout">
+	<LinearLayout
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:id="@+id/inference_header"
+    	android:visibility="gone">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:layout_weight="2"
+            android:text="@string/layout_infer_type" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:layout_weight="1.5"
+            android:text="@string/layout_list_longitude" />
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:layout_weight="1.5"
+            android:text="@string/layout_list_latitude" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:id="@+id/raw_gps">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/layout_list_date"
-            android:textSize="12sp" />
+            android:text="@string/layout_list_date"/>
+        <!-- <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/layout_list_time"
+            android:textSize="12sp" /> -->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="15dp"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@string/layout_list_latitude"
-            android:textSize="12sp" />
+            android:text="@string/layout_list_latitude"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="15dp"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@string/layout_list_longitude"
-            android:textSize="12sp" />
+            android:text="@string/layout_list_longitude"/>
     </LinearLayout>
 
     <ListView

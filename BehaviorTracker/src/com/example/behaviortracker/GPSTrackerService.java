@@ -35,13 +35,13 @@ public class GPSTrackerService extends Service {
 	public static final String POINTS_TABLE_NAME = "LOCATION_POINTS";
 	public static final String TRIPS_TABLE_NAME = "TRIPS";
 	private final DecimalFormat sevenSigDigits = new DecimalFormat("0.#######");
+	private final DateFormat datestampFormat = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss");
 	private final DateFormat timestampFormat = new SimpleDateFormat(
-			"yyyyMMddHHmmss");
-	private final DateFormat timestampFormat2 = new SimpleDateFormat(
-			"yyyy/MM/dd/ HH:mm:ss");
+			"HH:mm:ss");
 	
 	// variables for time/distance between logging location
-	private static long minTimeMillis = 5000;
+	private static long minTimeMillis = 10000;
 	private static long minDistanceMeters = 0;//was 10
 	private static float minAccuracyMeters = 50;//was 35
 	// possibly add options in future to change these
@@ -50,7 +50,7 @@ public class GPSTrackerService extends Service {
 	private static boolean showingDebugToast = true;
 
 	private static final String tag = "GPSTrackerService";
-
+	private double id;
 	private void startTrackerService() {
 		Log.i(tag, "startTrackerService");
 		// ---use the LocationManager class to obtain GPS locations---
@@ -62,21 +62,26 @@ public class GPSTrackerService extends Service {
 				minDistanceMeters, locationListener);
 		initDatabase();
 	}
-
+	public void addIds(double i){
+		this.id += i;
+	}
 	private void initDatabase() {
 		db = this.openOrCreateDatabase(DATABASE_NAME,
 				SQLiteDatabase.OPEN_READWRITE, null);
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + POINTS_TABLE_NAME
-				+ " (GMTTIMESTAMP VARCHAR, LATITUDE REAL, LONGITUDE REAL,"
-				+ "ALTITUDE REAL, ACCURACY REAL, SPEED REAL, BEARING REAL);");
+				+ " (ID INT NOT NULL, GMTDATESTAMP DATETIME, LATITUDE REAL, LONGITUDE REAL,"
+				+ " ALTITUDE REAL, ACCURACY REAL, SPEED REAL, BEARING REAL, PRIMARY KEY(ID) );");
 		db.close();
 		Log.i(tag, "Database opened ok");
+		id = 0;
 	}
 
 	private void shutdownTrackerService() {
 		lm.removeUpdates(locationListener);
 	}
-
+	
+	
+	
 	public class MyLocationListener implements LocationListener {
 
 		public void onLocationChanged(Location loc) {
@@ -88,11 +93,12 @@ public class GPSTrackerService extends Service {
 							&& loc.getAccuracy() <= minAccuracyMeters) {
 						pointIsRecorded = true;
 						GregorianCalendar greg = new GregorianCalendar();
+						greg.setTimeZone(TimeZone.getTimeZone("GMT"));
 						TimeZone tz = greg.getTimeZone();
 						int offset = tz.getOffset(System.currentTimeMillis());
 						greg.add(Calendar.SECOND, (offset / 1000) * -1);
 						StringBuffer queryBuf = new StringBuffer();
-						
+							
 						//String date = timestampFormat2.format(greg.getTime());
 						
 						//GPSPoint newPoint = new GPSPoint(loc.getLatitude(), loc.getLongitude(), date);
@@ -100,25 +106,30 @@ public class GPSTrackerService extends Service {
 						//GPSpoints.add(newPoint);
 						queryBuf.append("INSERT INTO "
 								+ POINTS_TABLE_NAME
-								+ " (GMTTIMESTAMP,LATITUDE,LONGITUDE,ALTITUDE,ACCURACY,SPEED,BEARING) VALUES ("
-								+ "'"
-								+ timestampFormat2.format(greg.getTime())
-								+ "',"
+								+ " (ID, GMTDATESTAMP, LATITUDE, LONGITUDE, ALTITUDE, ACCURACY, SPEED, BEARING) VALUES ("
+								+ Double.toString(id)
+								+ ", "
+								+"'"
+								+ datestampFormat.format(greg.getTime())
+								+ "', "
+								//+ "'"
+								//+ timestampFormat.format(greg.getTime())
+								//+ "', "
 								+ loc.getLatitude()
-								+ ","
+								+ ", "
 								+ loc.getLongitude()
-								+ ","
+								+ ", "
 								+ (loc.hasAltitude() ? loc.getAltitude()
 										: "NULL")
-								+ ","
+								+ ", "
 								+ (loc.hasAccuracy() ? loc.getAccuracy()
 										: "NULL")
-								+ ","
+								+ ", "
 								+ (loc.hasSpeed() ? loc.getSpeed() : "NULL")
-								+ ","
+								+ ", "
 								+ (loc.hasBearing() ? loc.getBearing() : "NULL")
 								+ ");");
-						//Log.i(tag, queryBuf.toString());
+						Log.i(tag, queryBuf.toString());
 						db = openOrCreateDatabase(DATABASE_NAME,
 								SQLiteDatabase.OPEN_READWRITE, null);
 						db.execSQL(queryBuf.toString());
@@ -130,6 +141,8 @@ public class GPSTrackerService extends Service {
 						db.close();
 				}
 				if (pointIsRecorded) {
+					Log.i("ID", String.valueOf(id));
+					id++;
 					if (showingDebugToast)
 						Toast.makeText(
 								getBaseContext(),
@@ -209,7 +222,7 @@ public class GPSTrackerService extends Service {
 		super.onCreate();
 		GPSpoints = new ArrayList<GPSPoint>();
 		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
+		id = 0;
 		startTrackerService();
 
 		// Display a notification about us starting. We put an icon in the
@@ -235,7 +248,9 @@ public class GPSTrackerService extends Service {
 	public ArrayList<GPSPoint> getPoints(){
 		return GPSpoints;
 	}
-
+	public double getSize(){
+		return id;
+	}
 	/**
 	 * Show a notification while this service is running.
 	 */

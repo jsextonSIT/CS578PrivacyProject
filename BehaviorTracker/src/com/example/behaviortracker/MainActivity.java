@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ScrollView;
 
 public class MainActivity extends Activity {
 	private static final int MENU_TRACKING = 1;
+	private static final int MENU_ASSUMPTIONS = 2;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,7 +26,7 @@ public class MainActivity extends Activity {
 		
 
 		menu.add(ContextMenu.NONE, MENU_TRACKING, ContextMenu.NONE, R.string.menu_MAIN_tracking).setAlphabeticShortcut('M');
-		
+		menu.add(ContextMenu.NONE, MENU_ASSUMPTIONS, ContextMenu.NONE, R.string.menu_MAIN_assumptions).setAlphabeticShortcut('A');
 		return result;
 	}
 	@Override
@@ -36,6 +39,10 @@ public class MainActivity extends Activity {
 				Intent intent = new Intent(this, GPSActivity.class);
 
 				startActivity(intent);
+				break;
+			case MENU_ASSUMPTIONS:
+				ScrollView assumptions = (ScrollView) findViewById(R.id.layout_assumptions);
+				assumptions.setVisibility(View.VISIBLE);
 				break;
 			default:
 				//showAlert(R.string.menu_message_unsupported);

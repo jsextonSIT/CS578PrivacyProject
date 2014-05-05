@@ -5,17 +5,33 @@
     <string name="action_settings">Settings</string>
     <string name="SHARED_PREFS_FILENAME">message_tracker_service_shared_prefs</string>
 	
-    <string name="menu_MAIN_tracking">Map</string>
+    <string name="menu_MAIN_tracking">GPS Tracker</string>
+    <string name="menu_MAIN_assumptions">Show GPS Assumptions</string>
     <string name="menu_GPS_start">Start Tracking</string>
     <string name="menu_GPS_stop">Stop Tracking</string>
     <string name="menu_GPS_clear">Clear Database</string>
+    <string name="menu_GPS_stock">Add Stock Points</string>
     <string name="GPS_service_stopped">GPS tracking has stopped</string>
     <string name="GPS_service_started">GPS tracking has started</string>
     <string name="GPS_name">GPSTrackerService</string>
     <string name="menu_GPS_export">Export KML to SD Card</string>
-    <string name="menu_GPS_list">Show GPS points list</string>
-    <string name="menu_GPS_hide_list">Hide GPS points list</string>
+    <string name="menu_GPS_list">Update all GPS points</string>
+    <string name="menu_GPS_hide_list">Hide GPS points</string>
+    <string name="menu_GPS_night_list">Show night points</string>
+    <string name="menu_GPS_infer_list">Show inferences</string>
     <string name="layout_list_longitude">Longitude</string>
     <string name="layout_list_latitude">Latitude</string>
-    <string name="layout_list_date">Date</string>
+    <string name="layout_list_date">Date and Time</string>
+    <string name="layout_list_time">Time</string>
+    <string name="layout_infer_type">Type:</string>
+    <string name="assum_desc_title">GPS Tracking Assumptions and Details</string>
+    <string name="assum_desc_home">Home:  Behavior Tracker guesses your home coordinates on the assumption that most people sleep or are at home on most nights.
+    	  A query is made to the point database getting all points recorded between the time 11PM and 5AM.  The most frequently recorded point is assumed to be your home.</string>
+    <string name="assum_desc_work">Workplace:  It guesses your work coordinates on the assumption that most people are at work during the day, most days.
+    	  A query is made to the point database getting all points recorded between the time 10AM and 4PM.  The most frequently recorded point is assumed to be your workplace.  
+    	  This query could be further refined by excluding the dates of all weekends and holidays.</string>
+    <string name="assum_desc_holiday">Home or work during Holidays:  The most frequently recorded point on a holiday is the location the user stayed at on the holiday.  
+        Using the guessed locations of the home and work, these can be compared to determine if the user was at home, work or elsewhere on that holiday</string>	  
+    <string name="assum_desc_points">Collection and Data: The GPS tracker collects a new GPS point every 10 minutes regardless of whether the phone has changed location.  
+       If the accuracy of the point is not within 30 meters, the point is discarded.  The data that is collected is the time, date, longitude and latitude.</string>
 </resources>

@@ -11,11 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
-public class GPSListAdapter extends ArrayAdapter<GPSPoint>{
-	private ArrayList<GPSPoint> points;
+public class GPSInferAdapter extends ArrayAdapter<InferPoint>{
+	private ArrayList<InferPoint> points;
 	private Context context;
-	public GPSListAdapter(Context context, ArrayList<GPSPoint> points) {
-		super(context, R.layout.gps_item, points);
+	public GPSInferAdapter(Context context, ArrayList<InferPoint> points) {
+		super(context, R.layout.inference_item, points);
 		this.points = points;
 		this.context = context;
 	}
@@ -24,19 +24,19 @@ public class GPSListAdapter extends ArrayAdapter<GPSPoint>{
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.gps_item, parent, false);
+			convertView = inflater.inflate(R.layout.inference_item, parent, false);
 		}
-		Log.i("Date", points.get(position).date);
+		Log.i("Type", points.get(position).type);
 		Log.i("position", Integer.toString(position));
-		GPSPoint i = points.get(position);
-		TextView date = (TextView) convertView.findViewById(R.id.date);
+		InferPoint i = points.get(position);
+		TextView type = (TextView) convertView.findViewById(R.id.type);
 		//TextView time = (TextView) convertView.findViewById(R.id.time);
 		TextView latitude = (TextView) convertView.findViewById(R.id.latitude);
 		TextView longitude = (TextView) convertView.findViewById(R.id.longitude);
 //		date.setText("d");
 //		latitude.setText("lat");
 //		longitude.setText("long");
-		date.setText(i.date);
+		type.setText(i.type);
 		//time.setText(i.time);
 		latitude.setText(Double.toString(i.latitude));
 		longitude.setText(Double.toString(i.longitude));

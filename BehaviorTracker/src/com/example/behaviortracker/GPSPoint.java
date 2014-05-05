@@ -8,16 +8,19 @@ public class GPSPoint implements Parcelable{
 	double latitude;
 	double longitude;
 	String date;
+	//String time;
 	public GPSPoint(double lat, double lon, String d){
 		latitude = lat;
 		longitude = lon;
 		date = d;
+		//time = t;
 	}
 
 	    private GPSPoint(Parcel in) {
 	        latitude = in.readDouble();
 	        longitude = in.readDouble();
 	        date = in.readString();
+	        //time = in.readString();
 	    }
 
 	    public int describeContents() {
@@ -28,6 +31,7 @@ public class GPSPoint implements Parcelable{
 	        out.writeDouble(latitude);
 	        out.writeDouble(longitude);
 	        out.writeString(date);
+	        //out.writeString(time);
 	    }
 
 	    public static final Parcelable.Creator<GPSPoint> CREATOR = new Parcelable.Creator<GPSPoint>() {
@@ -40,7 +44,8 @@ public class GPSPoint implements Parcelable{
 	        }
 	    };
 	    public void logPoint(){
-	    	Log.i("New GPS Point at:", date);
+	    	Log.i("New GPS Point date:", date);
+	    	//Log.i("time:", time);
 	    	Log.i("latitude", Double.toString(latitude));
 	    	Log.i("longitude", Double.toString(longitude));
 	    }
