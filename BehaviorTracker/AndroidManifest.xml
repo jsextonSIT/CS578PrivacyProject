@@ -62,20 +62,6 @@
         <!-- <uses-library
             android:name="com.google.android.maps"
             android:required="true" /> -->
-
-        <receiver android:name=".PhoneReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".MessageReceiver" >
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name=".PhoneTrackerService" />
-        <service android:name=".MessageTrackerService" />
     </application>
     <!-- for rendering the map -->
 
