@@ -6,6 +6,7 @@
     <string name="SHARED_PREFS_FILENAME">message_tracker_service_shared_prefs</string>
 	<string name="app_intro"><b>Behavior Tracker functions to make inferences about its user using communication and location data.</b>\nThis page\'s menu allows navigation to the location inference page and display of communication inference data.
 	   \nThe <b>\"Show Relationships\"</b> button will show a list of contacts and a score based their connection to you.  The <b>\"Show Inactive Time\"</b> button displays the range of time that the user is inactive.
+	   \nThe <b>\"Show Area Codes\"</b> button will show a list of months and states that the application infers you lived in for the previous 20 months.  Unknown is printed if there are insufficient records.
 	    \nThe <b>\"GPS Tracker\"</b> button will open the GPS page.  Its different capabilities are available through its menu.\nTo start/stop collecting GPS points press the <b>\"Start/Stop Tracking\"</b> button.\nTo display the most recent points collected, press the 
 	    <b>\"Update all GPS points\"</b> button.\nTo clear the database of all GPS points, press the <b>\"Clear Database\"</b> button.\nTo show the inferences based on the points, press the <b>\"Show Inferences\"</b> button.\nPressing the <b>\"Add Stock Points\"</b> button will 
 	    load predefined GPS points into the database for testing purposes.
@@ -13,6 +14,7 @@
     <string name="menu_MAIN_tracking">GPS Tracker</string>
     <string name="menu_MAIN_assumptions">Show GPS Assumptions</string>
     <string name="menu_MAIN_relationships">Show Relationships</string>
+    <string name="menu_MAIN_acodes">Show Area Codes</string>
     <string name="menu_MAIN_inactive">Show Inactive Time</string>
     <string name="menu_MAIN_guide">Show Usage Guide</string>
     <string name="menu_GPS_start">Start Tracking</string>
@@ -27,6 +29,8 @@
     <string name="menu_GPS_hide_list">Hide GPS points</string>
     <string name="menu_GPS_night_list">Show night points</string>
     <string name="menu_GPS_infer_list">Show inferences</string>
+    <string name="layout_acode_month">Month</string>
+    <string name="layout_acode_state">State</string>
     <string name="layout_inact_start">Inactivity Start</string>
     <string name="layout_inact_end">End</string>
     <string name="layout_rel_contacts">Contact</string>

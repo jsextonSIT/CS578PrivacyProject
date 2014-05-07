@@ -45,6 +45,34 @@
             android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout
+        android:id="@+id/layout_acode"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="top"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/acode_month"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="@string/layout_acode_month"
+            android:textSize="20sp" 
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/acode_state"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="@string/layout_acode_state"
+            android:textSize="18sp" 
+            android:textStyle="bold"/>
+        </LinearLayout>
+        <LinearLayout
         android:id="@+id/layout_inactive"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
