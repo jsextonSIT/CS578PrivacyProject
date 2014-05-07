@@ -44,9 +44,6 @@ public class GPSActivity extends ListActivity /*
 											 * GooglePlayServicesClient
 											 * .OnConnectionFailedListener
 											 */{
-	private String currentTripName = "";
-	private int tripNum = 0;
-	private final DecimalFormat sevenSigDigits = new DecimalFormat("0.#######");
 	private static final String tag = "GPSTrackerActivity";
 
 	private ArrayList<GPSPoint> GPSpoints = null;
@@ -57,15 +54,12 @@ public class GPSActivity extends ListActivity /*
 	private GPSListAdapter adapter = null;
 	private GPSInferAdapter iadapter = null;
 	private int fragid;
-	private String[] types = { "Home", "Work", "Holidays" };
 	MenuItem toggle, list;
 	private static final int MENU_TOGGLE = 1;
 	private static final int MENU_LIST = 2;
 	private static final int MENU_CLEAR = 3;
-	private static final int MENU_NIGHT = 4;
 	private static final int MENU_INFER = 4;
 	private static final int MENU_TEST = 5;
-	private static final int MENU_EXPORT = 2;
 	private double tolerance = .0001;
 	Location location;
 	int altitudeCorrectionMeters = 20;
@@ -181,7 +175,7 @@ public class GPSActivity extends ListActivity /*
 	private void showInferences() {
 		GPSPoint home, work, holiday;
 		InferPoint hom, wor, holi;
-		ArrayList<InferPoint> infs = new ArrayList(3);
+		ArrayList<InferPoint> infs = new ArrayList();
 		/* first make home query */
 		home = getHome();
 		if (home != null) {
@@ -837,17 +831,17 @@ public class GPSActivity extends ListActivity /*
 //		fileBuf.append("</kml>");
 //	}
 
-	private String zuluFormat(String beginTimestamp) {
-		// turn 20081215135500 into 2008-12-15T13:55:00Z
-		StringBuffer buf = new StringBuffer(beginTimestamp);
-		buf.insert(4, '-');
-		buf.insert(7, '-');
-		buf.insert(10, 'T');
-		buf.insert(13, ':');
-		buf.insert(16, ':');
-		buf.append('Z');
-		return buf.toString();
-	}
+//	private String zuluFormat(String beginTimestamp) {
+//		// turn 20081215135500 into 2008-12-15T13:55:00Z
+//		StringBuffer buf = new StringBuffer(beginTimestamp);
+//		buf.insert(4, '-');
+//		buf.insert(7, '-');
+//		buf.insert(10, 'T');
+//		buf.insert(13, ':');
+//		buf.insert(16, ':');
+//		buf.append('Z');
+//		return buf.toString();
+//	}
 
 	/*
 	 * Handle results returned to the FragmentActivity by Google Play services

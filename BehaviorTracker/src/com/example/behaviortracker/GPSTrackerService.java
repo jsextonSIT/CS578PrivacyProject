@@ -38,8 +38,6 @@ public class GPSTrackerService extends Service {
 	private final DecimalFormat sevenSigDigits = new DecimalFormat("0.#######");
 	private final DateFormat datestampFormat = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss");
-	private final DateFormat timestampFormat = new SimpleDateFormat(
-			"HH:mm:ss");
 	
 	// variables for time/distance between logging location
 	private static long minTimeMillis = 600000;
