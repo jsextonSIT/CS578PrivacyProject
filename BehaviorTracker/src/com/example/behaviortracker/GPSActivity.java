@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -92,6 +93,7 @@ public class GPSActivity extends ListActivity /*
 		// inferLayout = (LinearLayout) findViewById(R.id.inference_layout);
 		headerLayout = (LinearLayout) findViewById(R.id.inference_header);
 		rawLayout = (LinearLayout) findViewById(R.id.raw_gps);
+		
 		// map stuff
 		// setContentView(R.layout.fragment_map);
 		// get map layout
@@ -135,6 +137,7 @@ public class GPSActivity extends ListActivity /*
 			rawLayout.setVisibility(View.VISIBLE);
 			// inferLayout.setVisibility(View.GONE);
 			headerLayout.setVisibility(View.GONE);
+			iadapter.clear();
 			fragid = 0;
 		}
 		switch (item.getItemId()) {
@@ -284,64 +287,67 @@ public class GPSActivity extends ListActivity /*
 	 */
 	private void addStockPoints() {
 		double init;
-		clearTable();
-		if (GPSservice != null) {
-			init = GPSservice.getSize();
-			SQLiteDatabase db = openOrCreateDatabase(
-					GPSTrackerService.DATABASE_NAME,
-					SQLiteDatabase.OPEN_READWRITE, null);
-			/* add home points */
-			for (int i = 0; i < 240; i += 10) {
-				StringBuffer queryBuf = makePoint(init, "2014-04-15 " + i / 60
-						+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
-						"40.7459", "-74.0272");
-				db.execSQL(queryBuf.toString());
-				init++;
-				queryBuf = makePoint(init, "2014-04-16 " + i / 60 + ":"
-						+ (((i % 60) == 0) ? "00" : i % 60) + ":00", "40.7459",
-						"-74.0272");
-				db.execSQL(queryBuf.toString());
-				init++;
-			}
-			for (int i = 1320; i < 1440; i += 10) {
-				StringBuffer queryBuf = makePoint(init, "2014-04-15 " + i / 60
-						+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
-						"40.7459", "-74.0272");
-				init++;
-				db.execSQL(queryBuf.toString());
-				queryBuf = makePoint(init, "2014-04-16 " + i / 60 + ":"
-						+ (((i % 60) == 0) ? "00" : i % 60) + ":00", "40.7459",
-						"-74.0272");
-				db.execSQL(queryBuf.toString());
-				init++;
-			}
-			/* add work points */
-			for (int i = 600; i < 960; i += 10) {
-				StringBuffer queryBuf = makePoint(init, "2014-04-15 " + i / 60
-						+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
-						"40.7450", "-74.0242");
-				db.execSQL(queryBuf.toString());
-				init++;
-				queryBuf = makePoint(init, "2014-04-16 " + i / 60 + ":"
-						+ (((i % 60) == 0) ? "00" : i % 60) + ":00", "40.7450",
-						"-74.0242");
-				db.execSQL(queryBuf.toString());
-				init++;
-			}
-			/* add easter points */
-			for (int i = 600; i < 960; i += 10) {
-				StringBuffer queryBuf = makePoint(init, "2014-04-20 " + i / 60
-						+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
-						"40.7458", "-74.0273");
-				db.execSQL(queryBuf.toString());
-				init++;
-			}
-			if (GPSservice != null) {
-				GPSservice.addIds(init);
-			}
-			if (db.isOpen())
-				db.close();
+		//clearTable();
+		SQLiteDatabase db = openOrCreateDatabase(
+				GPSTrackerService.DATABASE_NAME,
+				SQLiteDatabase.OPEN_READWRITE, null);
+		/* get size of database */
+		Cursor cursor = db.rawQuery("SELECT * " + " FROM "
+				+ GPSTrackerService.POINTS_TABLE_NAME,
+				null);
+		init = cursor.getCount();
+		cursor.close();
+		/* add home points */
+		for (int i = 0; i < 240; i += 10) {
+			StringBuffer queryBuf = makePoint(init, "2014-04-15 " + i / 60
+					+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
+					"40.7459", "-74.0272");
+			db.execSQL(queryBuf.toString());
+			init++;
+			queryBuf = makePoint(init, "2014-04-16 " + i / 60 + ":"
+					+ (((i % 60) == 0) ? "00" : i % 60) + ":00", "40.7459",
+					"-74.0272");
+			db.execSQL(queryBuf.toString());
+			init++;
 		}
+		for (int i = 1320; i < 1440; i += 10) {
+			StringBuffer queryBuf = makePoint(init, "2014-04-15 " + i / 60
+					+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
+					"40.7459", "-74.0272");
+			init++;
+			db.execSQL(queryBuf.toString());
+			queryBuf = makePoint(init, "2014-04-16 " + i / 60 + ":"
+					+ (((i % 60) == 0) ? "00" : i % 60) + ":00", "40.7459",
+					"-74.0272");
+			db.execSQL(queryBuf.toString());
+			init++;
+		}
+		/* add work points */
+		for (int i = 600; i < 960; i += 10) {
+			StringBuffer queryBuf = makePoint(init, "2014-04-15 " + i / 60
+					+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
+					"40.7450", "-74.0242");
+			db.execSQL(queryBuf.toString());
+			init++;
+			queryBuf = makePoint(init, "2014-04-16 " + i / 60 + ":"
+					+ (((i % 60) == 0) ? "00" : i % 60) + ":00", "40.7450",
+					"-74.0242");
+			db.execSQL(queryBuf.toString());
+			init++;
+		}
+		/* add easter points */
+		for (int i = 600; i < 960; i += 10) {
+			StringBuffer queryBuf = makePoint(init, "2014-04-20 " + i / 60
+					+ ":" + (((i % 60) == 0) ? "00" : i % 60) + ":00",
+					"40.7458", "-74.0273");
+			db.execSQL(queryBuf.toString());
+			init++;
+		}
+		if (GPSservice != null) {
+			GPSservice.setId(init);
+		}
+		if (db.isOpen())
+			db.close();
 	}
 
 	StringBuffer makePoint(double i, String dat, String lat, String lon) {

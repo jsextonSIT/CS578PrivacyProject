@@ -16,6 +16,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+	private static final int MENU_GUIDE = 0;
 	private static final int MENU_TRACKING = 1;
 	private static final int MENU_ASSUMPTIONS = 2;
 	private static final int MENU_RELATION = 3;
@@ -25,6 +26,7 @@ public class MainActivity extends Activity {
 	private RelationshipAdapter radapter;
 	private LinearLayout rheader = null, iheader = null, inact = null;
 	private ScrollView assumptions;
+	private TextView intro;
 	private ListView lv;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class MainActivity extends Activity {
 		iheader = (LinearLayout) findViewById(R.id.layout_inactive);
 		inact = (LinearLayout) findViewById(R.id.layout_inactive2);
 		assumptions = (ScrollView) findViewById(R.id.layout_assumptions);
-		
+		intro = (TextView) findViewById(R.id.layout_intro);
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		boolean result = super.onCreateOptionsMenu(menu);
 		
-
+		menu.add(ContextMenu.NONE, MENU_GUIDE, ContextMenu.NONE, R.string.menu_MAIN_guide).setAlphabeticShortcut('G');
 		menu.add(ContextMenu.NONE, MENU_TRACKING, ContextMenu.NONE, R.string.menu_MAIN_tracking).setAlphabeticShortcut('M');
 		menu.add(ContextMenu.NONE, MENU_ASSUMPTIONS, ContextMenu.NONE, R.string.menu_MAIN_assumptions).setAlphabeticShortcut('A');
 		menu.add(ContextMenu.NONE, MENU_RELATION, ContextMenu.NONE, R.string.menu_MAIN_relationships).setAlphabeticShortcut('R');
@@ -54,6 +56,13 @@ public class MainActivity extends Activity {
 	{
 		switch (item.getItemId())
 		{
+		case MENU_GUIDE:
+			assumptions.setVisibility(View.GONE);
+			rheader.setVisibility(View.GONE);
+			iheader.setVisibility(View.GONE);
+			inact.setVisibility(View.GONE);
+			intro.setVisibility(View.VISIBLE);
+		break;
 			case MENU_TRACKING:
 				//startGPSActivity();
 				Intent intent = new Intent(this, GPSActivity.class);
@@ -66,11 +75,13 @@ public class MainActivity extends Activity {
 				rheader.setVisibility(View.GONE);
 				iheader.setVisibility(View.GONE);
 				inact.setVisibility(View.GONE);
+				intro.setVisibility(View.GONE);
 				if (radapter != null)
 					radapter.clearAdapter();
 				break;
 			case MENU_RELATION:
 				/* hide assumptions and show relationships*/
+				intro.setVisibility(View.GONE);
 				assumptions.setVisibility(View.GONE);
 				rheader.setVisibility(View.VISIBLE);
 				iheader.setVisibility(View.GONE);
@@ -87,10 +98,11 @@ public class MainActivity extends Activity {
 				if (radapter != null)
 					radapter.clearAdapter();
 				assumptions.setVisibility(View.GONE);
+				intro.setVisibility(View.GONE);
 				rheader.setVisibility(View.GONE);
 				iheader.setVisibility(View.VISIBLE);
 				inact.setVisibility(View.VISIBLE);
-				PhoneAndMessageInactivityStatistics pm = new PhoneAndMessageInactivityStatistics(15000, this);
+				PhoneAndMessageInactivityStatistics pm = new PhoneAndMessageInactivityStatistics(60000, this, 50);
 				PhoneAndMessageInactivityStatistics.DisplayTimeStrings strs = pm.getAverageSleepTime();
 				TextView start = (TextView) findViewById(R.id.inact_start);
 				TextView end = (TextView) findViewById(R.id.inact_end);

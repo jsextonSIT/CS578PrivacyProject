@@ -14,6 +14,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
@@ -41,7 +42,7 @@ public class GPSTrackerService extends Service {
 			"HH:mm:ss");
 	
 	// variables for time/distance between logging location
-	private static long minTimeMillis = 10000;
+	private static long minTimeMillis = 600000;
 	private static long minDistanceMeters = 0;//was 10
 	private static float minAccuracyMeters = 50;//was 35
 	// possibly add options in future to change these
@@ -62,8 +63,8 @@ public class GPSTrackerService extends Service {
 				minDistanceMeters, locationListener);
 		initDatabase();
 	}
-	public void addIds(double i){
-		this.id += i;
+	public void setId(double i){
+		this.id = i;
 	}
 	private void initDatabase() {
 		db = this.openOrCreateDatabase(DATABASE_NAME,
@@ -71,9 +72,13 @@ public class GPSTrackerService extends Service {
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + POINTS_TABLE_NAME
 				+ " (ID INT NOT NULL, GMTDATESTAMP DATETIME, LATITUDE REAL, LONGITUDE REAL,"
 				+ " ALTITUDE REAL, ACCURACY REAL, SPEED REAL, BEARING REAL, PRIMARY KEY(ID) );");
+		Cursor cursor = db.rawQuery("SELECT * " + " FROM "
+				+ GPSTrackerService.POINTS_TABLE_NAME,
+				null);
+		id = cursor.getCount();
 		db.close();
+		
 		Log.i(tag, "Database opened ok");
-		id = 0;
 	}
 
 	private void shutdownTrackerService() {
@@ -230,7 +235,6 @@ public class GPSTrackerService extends Service {
 		showNotification();
 		Log.i("onCreate", "showNotification");
 	}
-
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

@@ -9,10 +9,12 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/layout_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:visibility="gone" />
+        android:text="@string/app_intro"
+        android:scrollbars = "vertical"
+         />
 
     <LinearLayout
         android:id="@+id/layout_relationships"
@@ -87,7 +89,7 @@
             android:layout_height="25dp"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@+id/inact_end"
+            android:id="@+id/inact_end"
             android:textSize="20sp" />
     </LinearLayout>
 	<ListView

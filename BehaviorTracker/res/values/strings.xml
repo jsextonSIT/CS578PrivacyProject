@@ -4,11 +4,17 @@
     <string name="app_name">Behavior Tracker</string>
     <string name="action_settings">Settings</string>
     <string name="SHARED_PREFS_FILENAME">message_tracker_service_shared_prefs</string>
-	
+	<string name="app_intro"><b>Behavior Tracker functions to make inferences about its user using communication and location data.</b>\nThis page\'s menu allows navigation to the location inference page and display of communication inference data.
+	   \nThe <b>\"Show Relationships\"</b> button will show a list of contacts and a score based their connection to you.  The <b>\"Show Inactive Time\"</b> button displays the range of time that the user is inactive.
+	    \nThe <b>\"GPS Tracker\"</b> button will open the GPS page.  Its different capabilities are available through its menu.\nTo start/stop collecting GPS points press the <b>\"Start/Stop Tracking\"</b> button.\nTo display the most recent points collected, press the 
+	    <b>\"Update all GPS points\"</b> button.\nTo clear the database of all GPS points, press the <b>\"Clear Database\"</b> button.\nTo show the inferences based on the points, press the <b>\"Show Inferences\"</b> button.\nPressing the <b>\"Add Stock Points\"</b> button will 
+	    load predefined GPS points into the database for testing purposes.
+	    </string>
     <string name="menu_MAIN_tracking">GPS Tracker</string>
     <string name="menu_MAIN_assumptions">Show GPS Assumptions</string>
     <string name="menu_MAIN_relationships">Show Relationships</string>
     <string name="menu_MAIN_inactive">Show Inactive Time</string>
+    <string name="menu_MAIN_guide">Show Usage Guide</string>
     <string name="menu_GPS_start">Start Tracking</string>
     <string name="menu_GPS_stop">Stop Tracking</string>
     <string name="menu_GPS_clear">Clear Database</string>
@@ -31,13 +37,13 @@
     <string name="layout_list_time">Time</string>
     <string name="layout_infer_type">Type:</string>
     <string name="assum_desc_title">GPS Tracking Assumptions and Details</string>
-    <string name="assum_desc_home">Home:  Behavior Tracker guesses your home coordinates on the assumption that most people sleep or are at home on most nights.
+    <string name="assum_desc_home"><b>Home:</b>  Behavior Tracker guesses your home coordinates on the assumption that most people sleep or are at home on most nights.
     	  A query is made to the point database getting all points recorded between the time 11PM and 5AM.  The most frequently recorded point is assumed to be your home.</string>
-    <string name="assum_desc_work">Workplace:  It guesses your work coordinates on the assumption that most people are at work during the day, most days.
+    <string name="assum_desc_work"><b>Workplace:</b>  It guesses your work coordinates on the assumption that most people are at work during the day, most days.
     	  A query is made to the point database getting all points recorded between the time 10AM and 4PM.  The most frequently recorded point is assumed to be your workplace.  
     	  This query could be further refined by excluding the dates of all weekends and holidays.</string>
-    <string name="assum_desc_holiday">Home or work during Holidays:  The most frequently recorded point on a holiday is the location the user stayed at on the holiday.  
+    <string name="assum_desc_holiday"><b>Home or work during Holidays:</b>  The most frequently recorded point on a holiday is the location the user stayed at on the holiday.  
         Using the guessed locations of the home and work, these can be compared to determine if the user was at home, work or elsewhere on that holiday</string>	  
-    <string name="assum_desc_points">Collection and Data: The GPS tracker collects a new GPS point every 10 minutes regardless of whether the phone has changed location.  
+    <string name="assum_desc_points"><b>Collection and Data:</b> The GPS tracker collects a new GPS point every 10 minutes regardless of whether the phone has changed location.  
        If the accuracy of the point is not within 30 meters, the point is discarded.  The data that is collected is the time, date, longitude and latitude.</string>
 </resources>
